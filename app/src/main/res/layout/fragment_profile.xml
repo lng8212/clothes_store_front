@@ -124,7 +124,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="Chỉnh sửa"
-            android:backgroundTint="@color/teal_200"
+            android:backgroundTint="@color/primary"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:layout_marginTop="30dp"

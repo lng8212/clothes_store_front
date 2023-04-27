@@ -5,13 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".MyApp"
         android:theme="@style/Theme.Ecommerce"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
@@ -29,13 +29,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -2,68 +2,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="50dp"
-    android:paddingEnd="50dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <!-- Welcome label -->
     <TextView
         android:id="@+id/welcome_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome"
+        android:layout_marginTop="32dp"
+        android:text="Login"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Username input -->
-    <EditText
-        android:id="@+id/username_input"
+    <TextView
+        android:id="@+id/welcome_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:hint="Email"
+        android:layout_marginTop="8dp"
+        android:text="Sign to your account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcome_label" />
 
+
+    <!-- Username input -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/login_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_desc"
+        app:lottie_rawRes="@raw/login" />
+
+    <TextView
+        android:id="@+id/username_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:letterSpacing="0.2"
+        android:text="Your email"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_anim" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/username_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginHorizontal="24dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username_desc" />
+
+
     <!-- Password input -->
+    <TextView
+        android:id="@+id/password_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:letterSpacing="0.2"
+        android:text="Pass word"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username_input" />
+
     <EditText
         android:id="@+id/password_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Password"
+        android:background="@drawable/bg_edittext"
         android:inputType="textPassword"
+        android:padding="8dp"
+        android:layout_marginHorizontal="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/username_input"
+        app:layout_constraintTop_toBottomOf="@id/password_desc"
         app:layout_constraintVertical_bias="0.4" />
 
     <!-- Sign in button -->
     <Button
         android:id="@+id/sign_in_button"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="24dp"
         android:text="Sign In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_input" />
+        app:layout_constraintTop_toBottomOf="@id/sign_up_button" />
 
     <!-- Sign up button -->
-    <Button
+    <TextView
         android:id="@+id/sign_up_button"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Sign Up"
+        android:layout_marginTop="16dp"
+        android:paddingVertical="4dp"
+        android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_in_button" />
+        app:layout_constraintTop_toBottomOf="@id/password_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

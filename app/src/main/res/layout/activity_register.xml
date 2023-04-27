@@ -4,60 +4,130 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="50dp"
+    android:padding="16dp"
     tools:context=".screens.auth.RegisterActivity">
 
-    <EditText
-        android:id="@+id/name_edit_txt"
-        android:hint="Name"
-        app:layout_constraintBottom_toTopOf="@id/email_edit_txt"
+    <TextView
+        android:id="@+id/welcome_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Register"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Create your account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_label" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/register_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_desc"
+        app:lottie_rawRes="@raw/register" />
+
+    <TextView
+        android:id="@+id/name_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textAllCaps="true"
+        android:letterSpacing="0.2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_anim"/>
+    <EditText
+        android:id="@+id/name_edit_txt"
+        android:padding="8dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_edittext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:importantForAutofill="no"
-        android:padding="8dp"
         tools:ignore="LabelFor,TextFields" />
+
+    <TextView
+        android:id="@+id/email_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textAllCaps="true"
+        android:letterSpacing="0.2"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_edit_txt"/>
 
     <EditText
         android:id="@+id/email_edit_txt"
-        android:hint="Mail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_edit_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/bg_edittext"
         android:importantForAutofill="no"
         android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_desc"
         tools:ignore="LabelFor,TextFields" />
+
+    <TextView
+        android:id="@+id/password_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textAllCaps="true"
+        android:letterSpacing="0.2"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_edit_txt"/>
 
     <EditText
         android:id="@+id/password_edt"
-        android:hint="Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_edit_txt"
+        app:layout_constraintTop_toBottomOf="@id/password_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:importantForAutofill="no"
         android:padding="8dp"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/bg_edittext"
         android:inputType="textPassword"
         tools:ignore="LabelFor,TextFields" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/register_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password_edt"
-        android:layout_width="120dp"
-        android:text="Đăng ký"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:text="Sign up"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:textColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">eCommerce</string>
+    <string name="app_name">Clothes Store</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fullname">FullName</string>
     <string name="email">example@email.com</string>
     <string name="phonenum">PhoneNum</string>
     <string name="address">Address</string>
+    <string name="sign_up">Don\'t have account? <u>Sign up</u></string>
     <string-array name="productStatus">
         <item>Còn hàng</item>
         <item>Hết hàng</item>

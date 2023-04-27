@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        Objects.requireNonNull(getSupportActionBar()).hide();
-
         setContentView(view);
         NavHostFragment navHostFragment = (NavHostFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment));
         // Get the NavController from the NavHostFragment
