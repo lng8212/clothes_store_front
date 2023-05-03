@@ -1,5 +1,6 @@
 package com.example.e_commerce.screens.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,11 @@ public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.
         this.context = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    void setListProduct(List<ProductModel> products){
+        this.products = products;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,12 +74,12 @@ public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.
 
         public void bind(ProductModel product) {
             Glide.with(context)
-                    .load(product.getProductImageURL())
+                    .load(product.getImage())
                     .apply(new RequestOptions().override(360, 480))
                     .into(imageView);
-            titleTextView.setText(product.getProductName());
-            priceTextView.setText(String.valueOf(product.getProductPrice()));
-            statusTextView.setText(product.getProductStatus());
+            titleTextView.setText(product.getName());
+            priceTextView.setText(String.valueOf(product.getPrice()));
+            statusTextView.setText(product.getDescription());
         }
     }
 }
