@@ -55,17 +55,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         this.context = context;
     }
 
-    void setData(List<CartItem> list, int position) {
-        setProducts(list);
-        notifyItemChanged(position);
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    void setDataAfterRemove(List<CartItem> list, int position) {
-        setProducts(list);
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -106,13 +95,14 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
         @SuppressLint("SetTextI18n")
         public void bind(CartItem product) {
-
+            //temp
+            checkBox.setChecked(false);
             Glide.with(context)
-                    .load(product.getProductFilePath())
+                    .load(product.getProduct().getImage())
                     .apply(new RequestOptions().override(360, 480))
                     .into(imageView);
-            titleTextView.setText(product.getProductName());
-            priceTextView.setText(String.valueOf(product.getProductCost()));
+            titleTextView.setText(product.getProduct().getName());
+            priceTextView.setText(String.valueOf(product.getProduct().getPrice()));
             quantityTextView.setText(String.valueOf(product.getQuantity()));
         }
 
@@ -123,11 +113,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    cartItemListener.onSelectCartItem(product.getQuantity() * product.getProductCost(),
+                    cartItemListener.onSelectCartItem(product.getQuantity() * product.getProduct().getPrice(),
                             position,
                             isChecked);
                 } else {
-                    cartItemListener.onSelectCartItem(-1 * (product.getQuantity() * product.getProductCost()),
+                    cartItemListener.onSelectCartItem(-1 * (product.getQuantity() * product.getProduct().getPrice()),
                             position,
                             isChecked);
 

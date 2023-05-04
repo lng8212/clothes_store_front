@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:letterSpacing="0.2"
-        android:text="Your email"
+        android:text="User name"
         android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_anim" />

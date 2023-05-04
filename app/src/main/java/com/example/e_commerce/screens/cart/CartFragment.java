@@ -1,9 +1,6 @@
 package com.example.e_commerce.screens.cart;
 
-import static androidx.navigation.Navigation.findNavController;
-import static com.example.e_commerce.screens.cart.CartFragment.CompanionObject.CART_ITEMS;
-import static com.example.e_commerce.screens.cart.CartFragment.CompanionObject.TOTAL_PRICE;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.e_commerce.R;
 import com.example.e_commerce.databinding.FragmentCartBinding;
 import com.example.e_commerce.network.model.request.cart.AddToCartRequest;
 import com.example.e_commerce.network.model.response.ResponseAPI;
@@ -35,6 +31,7 @@ public class CartFragment extends Fragment implements CartItemListener {
     ArrayList<CartItem> selectedItems;
     CartProductAdapter cartProductAdapter;
     Float totalPrice;
+    int totalSelected;
     @Inject
     CartService cartService;
     private FragmentCartBinding binding;
@@ -47,18 +44,18 @@ public class CartFragment extends Fragment implements CartItemListener {
         setUpCartItems();
 
         totalPrice = 0f;
+        totalSelected = 0;
         selectedItems = new ArrayList<>();
-        binding.totalPriceTxt.setText(totalPrice.toString());
         binding.orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(CART_ITEMS, selectedItems);
-                bundle.putFloat(TOTAL_PRICE, totalPrice);
-                if (!selectedItems.isEmpty()) {
-                    System.out.println("list items:"+selectedItems.size());
-                    findNavController(getView()).navigate(R.id.action_cartFragment_to_orderFragment, bundle);
-                }
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelableArrayList(CART_ITEMS, selectedItems);
+//                bundle.putFloat(TOTAL_PRICE, totalPrice);
+//                if (!selectedItems.isEmpty()) {
+//                    System.out.println("list items:"+selectedItems.size());
+//                    findNavController(getView()).navigate(R.id.action_cartFragment_to_orderFragment, bundle);
+//                }
             }
         });
 
@@ -88,42 +85,39 @@ public class CartFragment extends Fragment implements CartItemListener {
 
             @Override
             public void onFailure(Call<ResponseAPI<List<CartItem>>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
+    }
+
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+    private void update() {
+        cartProductAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void increaseQuantity(int position) {
         CartItem item = cartItemsList.get(position);
-        long currentQuantity = item.getQuantity();
-        Call<ResponseAPI<String>> call = cartService.updateCartItem(
+        int currentQuantity = item.getQuantity();
+        Call<ResponseAPI<List<CartItem>>> call = cartService.updateCartItem(
                 new AddToCartRequest(
+                        "Update",
                         item.getId(),
-                        item.getProductId(),
-                        currentQuantity + 1
+                        (int) (currentQuantity + 1)
                 ));
-        call.enqueue(new Callback<ResponseAPI<String>>() {
+        call.enqueue(new Callback<ResponseAPI<List<CartItem>>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
+            public void onResponse(Call<ResponseAPI<List<CartItem>>> call, Response<ResponseAPI<List<CartItem>>> response) {
                 if (response.isSuccessful()) {
-                    cartItemsList.set(position, new CartItem(
-                                    currentQuantity + 1,
-                                    item.getProductCost(),
-                                    item.getProductId(),
-                                    item.getId(),
-                                    item.getProductName(),
-                                    item.getProductDescription(),
-                                    item.getStatus(),
-                                    item.getProductFilePath()
-                            )
-                    );
-                    cartProductAdapter.setData(cartItemsList, position);
+                    cartItemsList.clear();
+                    cartItemsList.addAll(response.body().getData());
+                    update();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
+            public void onFailure(Call<ResponseAPI<List<CartItem>>> call, Throwable t) {
 
             }
         });
@@ -135,36 +129,29 @@ public class CartFragment extends Fragment implements CartItemListener {
         CartItem item = cartItemsList.get(position);
         long currentQuantity = item.getQuantity();
         if (currentQuantity > 1) {
-            Call<ResponseAPI<String>> call = cartService.updateCartItem(
+            Call<ResponseAPI<List<CartItem>>> call = cartService.updateCartItem(
                     new AddToCartRequest(
+                            "Update",
                             item.getId(),
-                            item.getProductId(),
-                            currentQuantity - 1
+                            (int) (currentQuantity - 1)
                     ));
-            call.enqueue(new Callback<ResponseAPI<String>>() {
+            call.enqueue(new Callback<ResponseAPI<List<CartItem>>>() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
-                public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
+                public void onResponse(Call<ResponseAPI<List<CartItem>>> call, Response<ResponseAPI<List<CartItem>>> response) {
                     if (response.isSuccessful()) {
-                        cartItemsList.set(position, new CartItem(
-                                        currentQuantity - 1,
-                                        item.getProductCost(),
-                                        item.getProductId(),
-                                        item.getId(),
-                                        item.getProductName(),
-                                        item.getProductDescription(),
-                                        item.getStatus(),
-                                        item.getProductFilePath()
-                                )
-                        );
-                        cartProductAdapter.setData(cartItemsList, position);
+                        cartItemsList.clear();
+                        cartItemsList.addAll(response.body().getData());
+                        update();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
+                public void onFailure(Call<ResponseAPI<List<CartItem>>> call, Throwable t) {
 
                 }
             });
+
         }
 
     }
@@ -172,34 +159,51 @@ public class CartFragment extends Fragment implements CartItemListener {
     @Override
     public void deleteItem(int position) {
         CartItem item = cartItemsList.get(position);
-        Call<ResponseAPI<String>> call = cartService.deleteCartItem(item.getId());
-        call.enqueue(new Callback<ResponseAPI<String>>() {
+        int currentQuantity = item.getQuantity();
+        Call<ResponseAPI<List<CartItem>>> call = cartService.updateCartItem(
+                new AddToCartRequest(
+                        "Remove",
+                        item.getId(),
+                        0
+                ));
+        call.enqueue(new Callback<ResponseAPI<List<CartItem>>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
+            public void onResponse(Call<ResponseAPI<List<CartItem>>> call, Response<ResponseAPI<List<CartItem>>> response) {
                 if (response.isSuccessful()) {
-                    cartItemsList.remove(position);
-                    cartProductAdapter.setDataAfterRemove(cartItemsList, position);
+                    cartItemsList.clear();
+                    cartItemsList.addAll(response.body().getData());
+                    update();
+                    totalPrice = 0f;
+                    totalSelected = 0;
+                    binding.tvTotalItem.setText("Total: " + totalSelected + " item");
+                    binding.totalPriceTxt.setText(totalPrice.toString());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
+            public void onFailure(Call<ResponseAPI<List<CartItem>>> call, Throwable t) {
 
             }
         });
 
+
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onSelectCartItem(float price, int position, boolean isChecked) {
 
         CartItem item = cartItemsList.get(position);
         if (isChecked) {
+            totalSelected += 1;
             selectedItems.add(item);
         } else {
+            totalSelected -= 1;
             selectedItems.remove(cartItemsList.get(position));
         }
         totalPrice += price;
+        binding.tvTotalItem.setText("Total: " + totalSelected + " item");
         binding.totalPriceTxt.setText(totalPrice.toString());
     }
 

@@ -33,10 +33,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(view);
 
         binding.registerBtn.setOnClickListener(v -> {
+            String username = binding.usernameEditTxt.getText().toString().trim();
             String name = binding.nameEditTxt.getText().toString().trim();
             String mail = binding.emailEditTxt.getText().toString().trim();
             String password = binding.passwordEdt.getText().toString().trim();
-            Call<RegisterResponse> call = authService.register(new RegisterBody(name, mail, password, "USER"));
+            Call<RegisterResponse> call = authService.register(new RegisterBody(name, username, mail, password, "User", "0123456", "HN"));
             call.enqueue(new Callback<RegisterResponse>() {
                 @Override
                 public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
@@ -44,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(RegisterActivity.this,"Network error or invalid email", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Network error or invalid email", Toast.LENGTH_LONG).show();
                     }
 
 

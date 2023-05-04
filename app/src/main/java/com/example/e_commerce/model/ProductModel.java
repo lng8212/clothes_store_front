@@ -3,115 +3,102 @@ package com.example.e_commerce.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
 
-import com.example.e_commerce.network.model.response.product.ProductResponse;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class ProductModel implements Parcelable {
-    public static final Creator<ProductModel> CREATOR = new Creator<ProductModel>() {
-        @Override
-        public ProductModel createFromParcel(Parcel in) {
-            return new ProductModel(in);
-        }
+public class ProductModel implements Serializable {
+    private int id;
+    private String name;
+    private String supplier;
+    private Float price;
+    private Float old_price;
+    private Float discount;
+    private String image;
+    private String description;
+    private ArrayList<Category> categories;
 
-        @Override
-        public ProductModel[] newArray(int size) {
-            return new ProductModel[size];
-        }
-    };
-    long id;
-    String productName;
-    long productPrice;
-    String productStatus;
-    String productImageURL;
-    String productDesc;
-    public ProductModel(String productName, long productPrice, String productStatus, String productImageURL, String productDesc) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productStatus = productStatus;
-        this.productImageURL = productImageURL;
-        this.productDesc = productDesc;
-    }
-    public ProductModel(ProductResponse productResponse) {
-        this.id = productResponse.getID();
-        this.productName = productResponse.getProductName();
-        this.productPrice = productResponse.getProductCost();
-        this.productStatus = String.valueOf(productResponse.getProductStatus());
-        this.productImageURL = "https://ih1.redbubble.net/image.4646407321.9310/ssrco,classic_tee,mens,fafafa:ca443f4786,front_alt,square_product,600x600.jpg";
-        this.productDesc = productResponse.getProductDescription();
+    public ProductModel(int id, String name, String supplier, Float price, Float old_price, Float discount, String image, String description, ArrayList<Category> categories) {
+        this.id = id;
+        this.name = name;
+        this.supplier = supplier;
+        this.price = price;
+        this.old_price = old_price;
+        this.discount = discount;
+        this.image = image;
+        this.description = description;
+        this.categories = categories;
     }
 
-    protected ProductModel(Parcel in) {
-        productName = in.readString();
-        if (in.readByte() == 0) {
-            productPrice = Long.parseLong(null);
-        } else {
-            productPrice = in.readLong();
-        }
-        productStatus = in.readString();
-        productImageURL = in.readString();
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getProductDesc() {
-        return productDesc;
+    public String getName() {
+        return name;
     }
 
-    public void setProductDesc(String productDesc) {
-        this.productDesc = productDesc;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getSupplier() {
+        return supplier;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 
-    public long getProductPrice() {
-        return productPrice;
+    public Float getPrice() {
+        return price;
     }
 
-    public void setProductPrice(long productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
-    public String getProductStatus() {
-        return productStatus;
+    public Float getOld_price() {
+        return old_price;
     }
 
-    public void setProductStatus(String productStatus) {
-        this.productStatus = productStatus;
+    public void setOld_price(Float old_price) {
+        this.old_price = old_price;
     }
 
-    public String getProductImageURL() {
-        return productImageURL;
+    public Float getDiscount() {
+        return discount;
     }
 
-    public void setProductImageURL(String productImageURL) {
-        this.productImageURL = productImageURL;
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getImage() {
+        return image;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(productName);
-        dest.writeByte((byte) 1);
-        dest.writeLong(productPrice);
-        dest.writeString(productStatus);
-        dest.writeString(productImageURL);
-        dest.writeString(productDesc);
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<Category> categories) {
+        this.categories = categories;
     }
 }
