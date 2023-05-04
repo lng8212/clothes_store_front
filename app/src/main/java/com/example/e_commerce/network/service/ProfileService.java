@@ -5,6 +5,7 @@ import com.example.e_commerce.network.model.request.UpdateUserRequest;
 import com.example.e_commerce.network.model.response.profile.CurrentUserResponse;
 import com.example.e_commerce.network.model.response.ResponseAPI;
 import com.example.e_commerce.network.model.response.profile.UpdateUserResponse;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,4 +19,7 @@ public interface ProfileService {
 
     @POST("user/update")
     Call<ResponseAPI<UpdateUserResponse>> updateUserInfo(@Body UpdateUserRequest updateUserRequest);
+
+    @POST("user/auth/logout/")
+    Call<ResponseAPI<String>> logout(@Body JsonObject body);
 }

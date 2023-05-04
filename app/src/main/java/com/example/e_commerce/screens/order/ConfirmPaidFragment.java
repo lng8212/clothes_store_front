@@ -43,7 +43,7 @@ public class ConfirmPaidFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentConfirmPaidBinding.inflate(inflater,container,false);
         if (getArguments()!= null) {
-            cartItems = getArguments().getParcelableArrayList(CART_ITEMS);
+//            cartItems = getArguments().getParcelableArrayList(CART_ITEMS);
             userInfo = getArguments().getParcelable("USER_INFO");
             binding.nameInfo.setText(userInfo.getName());
             binding.phoneNumberInfo.setText(userInfo.getTelephoneNumber());
@@ -53,21 +53,21 @@ public class ConfirmPaidFragment extends Fragment {
         binding.confirmPaidBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<ResponseAPI<String>> call = orderService.createOrder(new CreateOrderRequest(null, userInfo.getTelephoneNumber(), userInfo.getDeliveryAddress(), 1, cartItems.stream().map(CartItem::getId).collect(Collectors.toList())));
-
-                call.enqueue(new Callback<ResponseAPI<String>>() {
-                    @Override
-                    public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
-                        if (response.isSuccessful()) {
-                            findNavController(getView()).navigate(R.id.action_confirmPaidFragment_to_profileFragment);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
-
-                    }
-                });
+//                Call<ResponseAPI<String>> call = orderService.createOrder(new CreateOrderRequest(null, userInfo.getTelephoneNumber(), userInfo.getDeliveryAddress(), 1, cartItems.stream().map(CartItem::getId).collect(Collectors.toList())));
+//
+//                call.enqueue(new Callback<ResponseAPI<String>>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
+//                        if (response.isSuccessful()) {
+//                            findNavController(getView()).navigate(R.id.action_confirmPaidFragment_to_profileFragment);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
+//
+//                    }
+//                });
             }
         });
         return binding.getRoot();

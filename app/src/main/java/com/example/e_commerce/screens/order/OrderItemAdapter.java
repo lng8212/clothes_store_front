@@ -74,13 +74,13 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Item
         @SuppressLint("SetTextI18n")
         public void bind(CartItem product) {
 
-            Glide.with(context)
-                    .load(product.getProductFilePath())
-                    .apply(new RequestOptions().override(360, 480))
-                    .into(binding.image);
-            binding.productName.setText(product.getProductName());
-            binding.productPrice.setText(String.valueOf(product.getProductCost()));
-            binding.quantityTxt.setText(String.valueOf(product.getQuantity()));
+//            Glide.with(context)
+//                    .load(product.getProductFilePath())
+//                    .apply(new RequestOptions().override(360, 480))
+//                    .into(binding.image);
+//            binding.productName.setText(product.getProductName());
+//            binding.productPrice.setText(String.valueOf(product.getProductCost()));
+//            binding.quantityTxt.setText(String.valueOf(product.getQuantity()));
         }
     }
 }

@@ -1,27 +1,18 @@
 package com.example.e_commerce.network.model.response;
 
+
 public class LoginResponse {
-    String accessToken;
-    String tokenType;
+   private LoginDetail tokens;
 
-    public LoginResponse(String accessToken, String tokenType) {
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
+    public LoginResponse(LoginDetail tokens) {
+        this.tokens = tokens;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public LoginDetail getTokens() {
+        return tokens;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public void setTokens(LoginDetail tokens) {
+        this.tokens = tokens;
     }
 }

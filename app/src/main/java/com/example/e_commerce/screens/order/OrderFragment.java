@@ -71,7 +71,7 @@ public class OrderFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentOrderBinding.inflate(inflater, container, false);
         if (getArguments() != null) {
-            cartItems = getArguments().getParcelableArrayList(CART_ITEMS);
+//            cartItems = getArguments().getParcelableArrayList(CART_ITEMS);
             binding.costValue.setText(String.valueOf(getArguments().getFloat(TOTAL_PRICE)));
             setUpOrderItems();
             setUpUserInfo();
@@ -106,26 +106,26 @@ public class OrderFragment extends Fragment {
     private void createPaidOrder() {
         Bundle bundle = new Bundle();
         bundle.putParcelable("USER_INFO", userInfo);
-        bundle.putParcelableArrayList(CART_ITEMS, new ArrayList<>(cartItems));
+//        bundle.putParcelableArrayList(CART_ITEMS, new ArrayList<>(cartItems));
         findNavController(getView()).navigate(R.id.action_orderFragment_to_confirmPaidFragment, bundle);
     }
 
     private void createCODOrder() {
-        Call<ResponseAPI<String>> call = orderService.createOrder(new CreateOrderRequest(null, userInfo.getTelephoneNumber(), userInfo.getDeliveryAddress(), paymentMethod.getNumVal(), cartItems.stream().map(CartItem::getId).collect(Collectors.toList())));
-
-        call.enqueue(new Callback<ResponseAPI<String>>() {
-            @Override
-            public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
-                if (response.isSuccessful()) {
-                    findNavController(getView()).navigate(R.id.action_orderFragment_to_profileFragment);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
-
-            }
-        });
+//        Call<ResponseAPI<String>> call = orderService.createOrder(new CreateOrderRequest(null, userInfo.getTelephoneNumber(), userInfo.getDeliveryAddress(), paymentMethod.getNumVal(), cartItems.stream().map(CartItem::getId).collect(Collectors.toList())));
+//
+//        call.enqueue(new Callback<ResponseAPI<String>>() {
+//            @Override
+//            public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
+//                if (response.isSuccessful()) {
+//                    findNavController(getView()).navigate(R.id.action_orderFragment_to_profileFragment);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
+//
+//            }
+//        });
     }
 
     private void setUpUserInfo() {

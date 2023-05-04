@@ -61,14 +61,12 @@ public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.
         TextView titleTextView;
 
         TextView priceTextView;
-        TextView statusTextView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.productImg);
             titleTextView = itemView.findViewById(R.id.productNameTxt);
             priceTextView = itemView.findViewById(R.id.productPriceTxt);
-            statusTextView = itemView.findViewById(R.id.statusTxt);
             itemView.setOnClickListener(v -> onClickProductItem.clickProduct(products.get(getAdapterPosition())));
         }
 
@@ -79,7 +77,6 @@ public class HomeProductAdapter extends RecyclerView.Adapter<HomeProductAdapter.
                     .into(imageView);
             titleTextView.setText(product.getName());
             priceTextView.setText(String.valueOf(product.getPrice()));
-            statusTextView.setText(product.getDescription());
         }
     }
 }

@@ -1,36 +1,37 @@
 package com.example.e_commerce.network.model.request.cart;
 
 public class AddToCartRequest {
-    Long oderItemId;
-    long productId, quantity;
+    private String submit;
+    private int item_id;
+    private int quantity;
 
-    public AddToCartRequest(Long oderItemId, long productId, long quantity) {
-        this.oderItemId = oderItemId;
-        this.productId = productId;
+    public AddToCartRequest(String submit, int item_id, int quantity) {
+        this.submit = submit;
+        this.item_id = item_id;
         this.quantity = quantity;
     }
 
-    public Long getOderItemId() {
-        return oderItemId;
+    public String getSubmit() {
+        return submit;
     }
 
-    public void setOderItemId(Long oderItemId) {
-        this.oderItemId = oderItemId;
+    public void setSubmit(String submit) {
+        this.submit = submit;
     }
 
-    public long getProductId() {
-        return productId;
+    public int getItem_id() {
+        return item_id;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setItem_id(int item_id) {
+        this.item_id = item_id;
     }
 
-    public long getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }
