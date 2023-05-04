@@ -55,9 +55,7 @@ public class HomeFragment extends Fragment implements OnClickProductItem {
     private void setUpOnClick() {
         binding.searchBtn.setOnClickListener(view -> {
             String query = binding.searchEdt.getText().toString();
-            if (!query.isEmpty()) {
-                searchProducts(query);
-            }
+            searchProducts(query);
         });
     }
 
