@@ -3,6 +3,7 @@ package com.example.e_commerce.di;
 import com.example.e_commerce.network.service.AuthService;
 import com.example.e_commerce.network.service.CartService;
 import com.example.e_commerce.network.service.OrderService;
+import com.example.e_commerce.network.service.PaymentService;
 import com.example.e_commerce.network.service.ProductService;
 import com.example.e_commerce.network.service.ProfileService;
 
@@ -45,5 +46,11 @@ public class ServiceModule {
     @Provides
     public OrderService provideOrderService(Retrofit retrofit) {
         return retrofit.create(OrderService.class);
+    }
+
+    @Singleton
+    @Provides
+    public PaymentService providePaymentService(Retrofit retrofit) {
+        return retrofit.create(PaymentService.class);
     }
 }

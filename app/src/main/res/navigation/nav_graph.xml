@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_cartFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_paymentTestFragment"
+            app:destination="@id/paymentTestFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -81,4 +84,9 @@
             android:id="@+id/action_confirmPaidFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/paymentTestFragment"
+        android:name="com.example.e_commerce.screens.payment.PaymentTestFragment"
+        android:label="fragment_payment_test"
+        tools:layout="@layout/fragment_payment_test" />
 </navigation>
