@@ -19,16 +19,34 @@ public class CurrentUserResponse implements Parcelable {
             return new CurrentUserResponse[size];
         }
     };
-    private String name;
+    private String name,username,role;
     private String email;
     private String telephoneNumber;
     private String deliveryAddress;
 
-    public CurrentUserResponse(String name, String email, String telephoneNumber, String deliveryAddress) {
+    public CurrentUserResponse(String name, String username, String role, String email, String telephoneNumber, String deliveryAddress) {
         this.name = name;
+        this.username = username;
+        this.role = role;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
         this.deliveryAddress = deliveryAddress;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     protected CurrentUserResponse(Parcel in) {

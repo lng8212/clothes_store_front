@@ -30,7 +30,6 @@ public class NetworkModule {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(chain -> {
             Request originalRequest = chain.request();
-            ;
             Request.Builder builder1 = originalRequest.newBuilder();
             if (!userManager.getAccessToken().equals(""))
                 builder1.addHeader("Authorization", "Bearer " + userManager.getAccessToken());
