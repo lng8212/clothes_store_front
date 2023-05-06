@@ -1,5 +1,8 @@
 package com.example.e_commerce.screens.cart;
 
+import static androidx.navigation.Navigation.findNavController;
+import static com.example.e_commerce.screens.home.HomeProductAdapter.CompanionObject.ITEM_KEY;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +12,9 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.e_commerce.R;
 import com.example.e_commerce.databinding.FragmentCartBinding;
+import com.example.e_commerce.model.ProductModel;
 import com.example.e_commerce.network.model.request.cart.AddToCartRequest;
 import com.example.e_commerce.network.model.response.ResponseAPI;
 import com.example.e_commerce.network.model.response.cart.CartItem;
@@ -56,6 +61,7 @@ public class CartFragment extends Fragment implements CartItemListener {
 //                    System.out.println("list items:"+selectedItems.size());
 //                    findNavController(getView()).navigate(R.id.action_cartFragment_to_orderFragment, bundle);
 //                }
+                findNavController(getView()).navigate(R.id.action_cartFragment_to_paymentTestFragment);
             }
         });
 
