@@ -55,7 +55,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseAPI<CurrentUserResponse>> call, Response<ResponseAPI<CurrentUserResponse>> response) {
                 if (response.isSuccessful()) {
-                    System.out.println(response.body().getData());
+                    CurrentUserResponse data = response.body().getData();
+                    binding.emailInfo.setText(data.getEmail());
+                    binding.phoneNumberInfo.setText(data.getTelephoneNumber());
+                    binding.addressInfo.setText(data.getDeliveryAddress());
                 }
             }
 

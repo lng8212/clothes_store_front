@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ProfileService {
-    @GET("user/me")
+    @GET("user/profile")
     Call<ResponseAPI<CurrentUserResponse>> getUserInfo();
 
     @POST("user/update")
