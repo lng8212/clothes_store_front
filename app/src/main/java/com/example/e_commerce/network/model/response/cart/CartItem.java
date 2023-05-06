@@ -4,11 +4,27 @@
 
 package com.example.e_commerce.network.model.response.cart;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.example.e_commerce.model.ProductModel;
 
 import java.io.Serializable;
 
-public class CartItem implements Serializable {
+public class CartItem implements Serializable, Parcelable {
+    public static final Creator<CartItem> CREATOR = new Creator<CartItem>() {
+        @Override
+        public CartItem createFromParcel(Parcel in) {
+            return new CartItem(in);
+        }
+
+        @Override
+        public CartItem[] newArray(int size) {
+            return new CartItem[size];
+        }
+    };
     private int id;
     private String user_id;
     private int quantity;
@@ -19,6 +35,12 @@ public class CartItem implements Serializable {
         this.user_id = user_id;
         this.quantity = quantity;
         this.product = product;
+    }
+
+    protected CartItem(Parcel in) {
+        id = in.readInt();
+        user_id = in.readString();
+        quantity = in.readInt();
     }
 
     public int getId() {
@@ -51,5 +73,17 @@ public class CartItem implements Serializable {
 
     public void setProduct(ProductModel product) {
         this.product = product;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(user_id);
+        dest.writeInt(quantity);
     }
 }
