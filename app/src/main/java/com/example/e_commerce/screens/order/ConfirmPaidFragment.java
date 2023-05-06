@@ -1,7 +1,6 @@
 package com.example.e_commerce.screens.order;
 
 import static androidx.navigation.Navigation.findNavController;
-import static com.example.e_commerce.screens.cart.CartFragment.CompanionObject.CART_ITEMS;
 
 import android.os.Bundle;
 
@@ -11,24 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.e_commerce.R;
 import com.example.e_commerce.databinding.FragmentConfirmPaidBinding;
-import com.example.e_commerce.network.model.request.order.CreateOrderRequest;
-import com.example.e_commerce.network.model.response.ResponseAPI;
 import com.example.e_commerce.network.model.response.cart.CartItem;
 import com.example.e_commerce.network.model.response.profile.CurrentUserResponse;
 import com.example.e_commerce.network.service.OrderService;
-import com.example.e_commerce.network.service.ProfileService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @AndroidEntryPoint
 public class ConfirmPaidFragment extends Fragment {

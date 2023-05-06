@@ -1,30 +1,29 @@
 package com.example.e_commerce.screens.order;
 
-import static androidx.navigation.Navigation.findNavController;
 import static com.example.e_commerce.screens.cart.CartFragment.CompanionObject.CART_ITEMS;
 import static com.example.e_commerce.screens.cart.CartFragment.CompanionObject.TOTAL_PRICE;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.e_commerce.R;
 import com.example.e_commerce.databinding.FragmentOrderBinding;
-import com.example.e_commerce.network.model.request.order.CreateOrderRequest;
+import com.example.e_commerce.network.model.payment.CreateOrderRequest;
+import com.example.e_commerce.network.model.payment.Item;
 import com.example.e_commerce.network.model.response.ResponseAPI;
 import com.example.e_commerce.network.model.response.cart.CartItem;
 import com.example.e_commerce.network.model.response.profile.CurrentUserResponse;
 import com.example.e_commerce.network.service.OrderService;
+import com.example.e_commerce.network.service.PaymentService;
 import com.example.e_commerce.network.service.ProfileService;
+import com.example.e_commerce.screens.payment.CreateOrderDataResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,36 +33,22 @@ import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-enum PaymentMethod {
-    PAID(1),
-    COD(0);
-    private int numVal;
-
-    PaymentMethod(int numVal) {
-        this.numVal = numVal;
-    }
-
-    public int getNumVal() {
-        return numVal;
-    }
-
-    public void setNumVal(int numVal) {
-        this.numVal = numVal;
-    }
-}
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
 
 @AndroidEntryPoint
 public class OrderFragment extends Fragment {
     FragmentOrderBinding binding;
     OrderItemAdapter orderItemAdapter;
     List<CartItem> cartItems;
-    PaymentMethod paymentMethod = PaymentMethod.COD;
     CurrentUserResponse userInfo;
     @Inject
     ProfileService profileService;
     @Inject
     OrderService orderService;
+    @Inject
+    PaymentService paymentService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,61 +56,68 @@ public class OrderFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentOrderBinding.inflate(inflater, container, false);
         if (getArguments() != null) {
-//            cartItems = getArguments().getParcelableArrayList(CART_ITEMS);
+            cartItems = getArguments().getParcelableArrayList(CART_ITEMS);
             binding.costValue.setText(String.valueOf(getArguments().getFloat(TOTAL_PRICE)));
             setUpOrderItems();
             setUpUserInfo();
-        }
-        binding.radioGroup.check(R.id.codCheckbox);
-        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton checkedRadioButton = binding.getRoot().findViewById(checkedId);
-                String checkedText = checkedRadioButton.getText().toString();
-                if (checkedText.equals("Đã thanh toán")) {
-                    paymentMethod = PaymentMethod.PAID;
-                } else {
-                    paymentMethod = PaymentMethod.COD;
+
+            binding.confirmOrderBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createOrder();
                 }
-                Toast.makeText(requireContext(), "You selected: " + checkedText + checkedId, Toast.LENGTH_SHORT).show();
-            }
-        });
-        binding.confirmOrderBtn.setOnClickListener(v -> {
-            switch (paymentMethod) {
-                case PAID:
-                    createPaidOrder();
-                    break;
-                case COD:
-                    createCODOrder();
-                    break;
-            }
-        });
+            });
+        }
         return binding.getRoot();
     }
 
-    private void createPaidOrder() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("USER_INFO", userInfo);
-//        bundle.putParcelableArrayList(CART_ITEMS, new ArrayList<>(cartItems));
-        findNavController(getView()).navigate(R.id.action_orderFragment_to_confirmPaidFragment, bundle);
-    }
+    private void createOrder() {
 
-    private void createCODOrder() {
-//        Call<ResponseAPI<String>> call = orderService.createOrder(new CreateOrderRequest(null, userInfo.getTelephoneNumber(), userInfo.getDeliveryAddress(), paymentMethod.getNumVal(), cartItems.stream().map(CartItem::getId).collect(Collectors.toList())));
-//
-//        call.enqueue(new Callback<ResponseAPI<String>>() {
-//            @Override
-//            public void onResponse(Call<ResponseAPI<String>> call, Response<ResponseAPI<String>> response) {
-//                if (response.isSuccessful()) {
-//                    findNavController(getView()).navigate(R.id.action_orderFragment_to_profileFragment);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseAPI<String>> call, Throwable t) {
-//
-//            }
-//        });
+        List<Item> itemList = cartItems.stream()
+                .map(source -> new Item(source.getId(), source.getProduct().getName(),source.getProduct().getPrice(),source.getQuantity()))
+                .collect(Collectors.toList());
+        CreateOrderRequest object = new CreateOrderRequest("dangdung", itemList,"description", "data");
+        Call<ResponseAPI<CreateOrderDataResponse>> call = paymentService.createOrder(object);
+
+        call.enqueue(new Callback<ResponseAPI<CreateOrderDataResponse>>() {
+            @Override
+            public void onResponse(Call<ResponseAPI<CreateOrderDataResponse>> call, Response<ResponseAPI<CreateOrderDataResponse>> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    String transToken = response.body().getData().getCreateOrderResponse().getZptranstoken();
+                    Toast.makeText(requireContext(), "Order id: " + response.body().getData().getOrderId(), Toast.LENGTH_LONG).show();
+                    if (transToken.isEmpty()) {
+                        Toast.makeText(requireContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+                    } else {
+                        ZaloPaySDK.getInstance().payOrder(
+                                requireActivity(),
+                                transToken,
+                                "", //zpdk://app
+                                new PayOrderListener() {
+                                    @Override
+                                    public void onPaymentSucceeded(String transactionId, String transToken, String appTransID) {
+                                        Log.e("TAG", "onPaymentSucceeded: ");
+                                    }
+
+                                    @Override
+                                    public void onPaymentCanceled(String s, String s1) {
+                                        Log.e("TAG", "onPaymentCanceled: ");
+                                    }
+
+                                    @Override
+                                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                                        Log.e("TAG", "onPaymentError: ");
+                                    }
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseAPI<CreateOrderDataResponse>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     private void setUpUserInfo() {

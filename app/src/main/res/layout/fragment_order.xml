@@ -47,9 +47,9 @@
                 android:id="@+id/orderDetailTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chi tiết đơn hàng"
+                android:text="Order Detail"
                 android:textSize="30sp"
-                android:textStyle="italic|bold"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -175,29 +175,9 @@
                 app:layout_constraintStart_toEndOf="@id/costTxt"
                 app:layout_constraintTop_toBottomOf="@id/orderItemsRcv" />
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/costTxt">
-
-                <RadioButton
-                    android:id="@+id/paidCheckbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Đã thanh toán" />
-
-                <RadioButton
-                    android:id="@+id/codCheckbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thanh toán khi nhận hàng" />
-            </RadioGroup>
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/confirmOrderBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -205,7 +185,7 @@
                 android:text="Xác nhận đơn hàng"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/radioGroup" />
+                app:layout_constraintTop_toBottomOf="@id/costValue" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/chatBtn"
