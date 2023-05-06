@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,40 +48,46 @@ public class PaymentTestFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentPaymentTestBinding.inflate(inflater, container, false);
         binding.btnPay.setOnClickListener(v -> {
-            CreateOrderRequest object = new CreateOrderRequest(5000, "dangdung", "description", "data", null, "12");
-            Call<ResponseAPI<CreateOrderResponse>> call = paymentService.createOrder(object);
+            CreateOrderRequest object = new CreateOrderRequest("dangdung", "description", "data");
+            Call<ResponseAPI<CreateOrderDataResponse>> call = paymentService.createOrder(object);
 
-            call.enqueue(new Callback<ResponseAPI<CreateOrderResponse>>() {
+            call.enqueue(new Callback<ResponseAPI<CreateOrderDataResponse>>() {
                 @Override
-                public void onResponse(Call<ResponseAPI<CreateOrderResponse>> call, Response<ResponseAPI<CreateOrderResponse>> response) {
+                public void onResponse(Call<ResponseAPI<CreateOrderDataResponse>> call, Response<ResponseAPI<CreateOrderDataResponse>> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        ZaloPaySDK.getInstance().payOrder(
-                                requireActivity(),
-                                response.body().getData().getZptranstoken(),
-                                "zpdk://app",
-                                new PayOrderListener() {
-                                    @Override
-                                    public void onPaymentSucceeded(String transactionId, String transToken, String appTransID) {
-                                        Toast.makeText(requireActivity(), "Success", Toast.LENGTH_LONG).show();
-                                    }
+                        String transToken = response.body().getData().getCreateOrderResponse().getZptranstoken();
+                        Toast.makeText(requireContext(), "Order id: " + response.body().getData().getOrderId(), Toast.LENGTH_LONG).show();
+                        if (transToken.isEmpty()) {
+                            Toast.makeText(requireContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            ZaloPaySDK.getInstance().payOrder(
+                                    requireActivity(),
+                                    transToken,
+                                    "", //zpdk://app
+                                    new PayOrderListener() {
+                                        @Override
+                                        public void onPaymentSucceeded(String transactionId, String transToken, String appTransID) {
+                                            Log.e("TAG", "onPaymentSucceeded: ");
+                                        }
 
-                                    @Override
-                                    public void onPaymentCanceled(String s, String s1) {
-                                        Toast.makeText(requireActivity(), "onPaymentCanceled", Toast.LENGTH_LONG).show();
-                                    }
+                                        @Override
+                                        public void onPaymentCanceled(String s, String s1) {
+                                            Log.e("TAG", "onPaymentCanceled: ");
+                                        }
 
-                                    @Override
-                                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-                                        Toast.makeText(requireActivity(), "onPaymentCanceled", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-
+                                        @Override
+                                        public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                                            Log.e("TAG", "onPaymentError: ");
+                                        }
+                                    });
+                        }
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseAPI<CreateOrderResponse>> call, Throwable t) {
+                public void onFailure(Call<ResponseAPI<CreateOrderDataResponse>> call, Throwable t) {
                     t.printStackTrace();
                 }
             });
