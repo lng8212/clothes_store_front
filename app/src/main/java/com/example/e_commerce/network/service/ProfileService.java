@@ -11,14 +11,15 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ProfileService {
-    @GET("user/profile")
+    @GET("user/profile/")
     Call<ResponseAPI<CurrentUserResponse>> getUserInfo();
 
-    @POST("user/update")
-    Call<ResponseAPI<UpdateUserResponse>> updateUserInfo(@Body UpdateUserRequest updateUserRequest);
+    @PUT("user/update/")
+    Call<ResponseAPI<String>> updateUserInfo(@Body UpdateUserRequest updateUserRequest);
 
     @POST("user/auth/logout/")
     Call<ResponseAPI<String>> logout(@Body JsonObject body);

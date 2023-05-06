@@ -29,10 +29,12 @@ import retrofit2.Response;
 
 @AndroidEntryPoint
 public class ProfileFragment extends Fragment {
+    static String USER = "user";
     @Inject
     ProfileService profileService;
     @Inject
     UserManager userManager;
+    CurrentUserResponse userResponse;
     private FragmentProfileBinding binding;
 
     @Override
@@ -43,7 +45,9 @@ public class ProfileFragment extends Fragment {
         binding.editUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findNavController(getView()).navigate(R.id.action_profileFragment_to_profileEditFragment);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(USER, userResponse);
+                findNavController(getView()).navigate(R.id.action_profileFragment_to_profileEditFragment, bundle);
             }
         });
         binding.btnLogout.setOnClickListener(view -> {
@@ -55,10 +59,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseAPI<CurrentUserResponse>> call, Response<ResponseAPI<CurrentUserResponse>> response) {
                 if (response.isSuccessful()) {
-                    CurrentUserResponse data = response.body().getData();
-                    binding.emailInfo.setText(data.getEmail());
-                    binding.phoneNumberInfo.setText(data.getTelephoneNumber());
-                    binding.addressInfo.setText(data.getDeliveryAddress());
+                    userResponse = response.body().getData();
+                    binding.nameInfo.setText(userResponse.getName());
+                    binding.emailInfo.setText(userResponse.getEmail());
+                    binding.phoneNumberInfo.setText(userResponse.getTelephoneNumber());
+                    binding.addressInfo.setText(userResponse.getDeliveryAddress());
                 }
             }
 
@@ -83,9 +88,8 @@ public class ProfileFragment extends Fragment {
                     Intent intent = new Intent(requireContext(), LoginActivity.class);
                     startActivity(intent);
                     userManager.deleteToken();
-                }
-                else {
-                    Toast.makeText(requireContext(), "An error has occurred!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "An error has occurred!", Toast.LENGTH_SHORT).show();
                 }
             }
 
