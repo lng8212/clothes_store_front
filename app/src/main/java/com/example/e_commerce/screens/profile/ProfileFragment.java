@@ -10,16 +10,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.e_commerce.R;
 import com.example.e_commerce.databinding.FragmentProfileBinding;
+import com.example.e_commerce.network.model.payment.response.OrderDetailResponse;
 import com.example.e_commerce.network.model.response.ResponseAPI;
 import com.example.e_commerce.network.model.response.profile.CurrentUserResponse;
+import com.example.e_commerce.network.service.PaymentService;
 import com.example.e_commerce.network.service.ProfileService;
 import com.example.e_commerce.screens.auth.LoginActivity;
 import com.example.e_commerce.utils.UserManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -35,6 +40,8 @@ public class ProfileFragment extends Fragment {
     ProfileService profileService;
     @Inject
     UserManager userManager;
+    @Inject
+    PaymentService paymentService;
     CurrentUserResponse userResponse;
     private FragmentProfileBinding binding;
 
@@ -74,7 +81,33 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        setUpOrderStatus();
+
         return binding.getRoot();
+    }
+
+    private void setUpOrderStatus() {
+        Call<ResponseAPI<List<OrderDetailResponse>>> call = paymentService.createOrder();
+
+        call.enqueue(new Callback<ResponseAPI<List<OrderDetailResponse>>>() {
+            @Override
+            public void onResponse(Call<ResponseAPI<List<OrderDetailResponse>>> call, Response<ResponseAPI<List<OrderDetailResponse>>> response) {
+                if (response.isSuccessful()) {
+                    List<OrderDetailResponse> userOrderList = response.body().getData();
+                    UserOrderAdapter userOrderAdapter = new UserOrderAdapter(userOrderList, requireContext());
+                    binding.orderRcv.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    binding.orderRcv.setAdapter(userOrderAdapter);
+                } else {
+                    System.out.println("fail to fetch order");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseAPI<List<OrderDetailResponse>>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void logout() {
