@@ -18,6 +18,7 @@ import com.example.e_commerce.network.model.response.profile.CurrentUserResponse
 import com.example.e_commerce.network.service.ProfileService;
 import com.example.e_commerce.screens.auth.LoginActivity;
 import com.example.e_commerce.utils.UserManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonObject;
 
 import javax.inject.Inject;
@@ -88,6 +89,7 @@ public class ProfileFragment extends Fragment {
                     Intent intent = new Intent(requireContext(), LoginActivity.class);
                     startActivity(intent);
                     userManager.deleteToken();
+                    FirebaseAuth.getInstance().signOut();
                 } else {
                     Toast.makeText(requireContext(), "An error has occurred!", Toast.LENGTH_SHORT).show();
                 }

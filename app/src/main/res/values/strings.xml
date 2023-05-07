@@ -7,6 +7,10 @@
     <string name="phonenum">PhoneNum</string>
     <string name="address">Address</string>
     <string name="sign_up">Don\'t have account? <u>Sign up</u></string>
+    <string name="request_id_token">631059737227-1rgm613b4fillj7flm1c2gtav6m31m5u.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">196362332791043</string>
+    <string name="fb_login_protocol_scheme">fb196362332791043</string>
+    <string name="facebook_client_token">6b23fb4097210e61eccf7928babf1adb</string>
     <string-array name="productStatus">
         <item>Còn hàng</item>
         <item>Hết hàng</item>
