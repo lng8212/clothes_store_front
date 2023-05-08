@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.e_commerce.R;
@@ -95,6 +96,10 @@ public class ProfileFragment extends Fragment {
                 if (response.isSuccessful()) {
                     List<OrderDetailResponse> userOrderList = response.body().getData();
                     UserOrderAdapter userOrderAdapter = new UserOrderAdapter(userOrderList, requireContext());
+
+                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(),
+                            new LinearLayoutManager(requireContext()).getOrientation());
+                    binding.orderRcv.addItemDecoration(dividerItemDecoration);
                     binding.orderRcv.setLayoutManager(new LinearLayoutManager(requireContext()));
                     binding.orderRcv.setAdapter(userOrderAdapter);
                 } else {
