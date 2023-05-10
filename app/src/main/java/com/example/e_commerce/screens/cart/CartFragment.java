@@ -177,6 +177,7 @@ public class CartFragment extends Fragment implements CartItemListener {
             @Override
             public void onResponse(Call<ResponseAPI<List<CartItem>>> call, Response<ResponseAPI<List<CartItem>>> response) {
                 if (response.isSuccessful()) {
+                    selectedItems.remove(cartItemsList.get(position));
                     cartItemsList.clear();
                     cartItemsList.addAll(response.body().getData());
                     update();
